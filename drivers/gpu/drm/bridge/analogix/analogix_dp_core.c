@@ -105,17 +105,13 @@ static int analogix_dp_detect_hpd(struct analogix_dp_device *dp)
 
 static bool analogix_dp_detect_sink_psr(struct analogix_dp_device *dp)
 {
-	unsigned char psr_version;
-	int ret;
-
-	ret = drm_dp_dpcd_readb(&dp->aux, DP_PSR_SUPPORT, &psr_version);
-	if (ret != 1) {
-		dev_err(dp->dev, "failed to get PSR version, disable it\n");
-		return false;
-	}
-
-	dev_dbg(dp->dev, "Panel PSR version : %x\n", psr_version);
-	return psr_version & DP_PSR_IS_SUPPORTED;
+	/*
+	 * ChamSys Ltd:
+	 * Using PSR doesn't work reliably on the Panasonic LCDs used
+	 * in MQ50HD/MQ70HD. The screen goes blank after a second when
+	 * the image isn't changing.
+	 */
+	return false;
 }
 
 static int analogix_dp_enable_sink_psr(struct analogix_dp_device *dp)
