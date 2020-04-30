@@ -3188,6 +3188,29 @@ static const struct panel_desc arm_rtsm = {
 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 };
 
+static const struct drm_display_mode panasonic_vvx10t025_mode = {
+	.clock = 286272,
+	.hdisplay = 2560,
+	.hsync_start = 2560 + 88,
+	.hsync_end = 2560 + 88 + 32,
+	.htotal = 2560 + 88 + 32 + 120,
+	.vdisplay = 1600,
+	.vsync_start = 1600 + 28,
+	.vsync_end = 1600 + 28 + 5,
+	.vtotal = 1600 + 28 + 5 + 71,
+	.vrefresh = 60,
+	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+};
+
+static const struct panel_desc panasonic_vvx10t025 = {
+	.modes = &panasonic_vvx10t025_mode,
+	.num_modes = 1,
+	.size = {
+		.width = 129,
+		.height = 171,
+	},
+};
+
 static const struct of_device_id platform_of_match[] = {
 	{
 		.compatible = "ampire,am-480272h3tmqw-t01h",
@@ -3525,6 +3548,9 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "winstar,wf35ltiacd",
 		.data = &winstar_wf35ltiacd,
+	}, {
+		.compatible = "panasonic,vvx10t025",
+		.data = &panasonic_vvx10t025,
 	}, {
 		/* sentinel */
 	}
