@@ -427,6 +427,10 @@ static int goodix_check_cfg_8(struct goodix_ts_data *ts,
 		return -EINVAL;
 	}
 
+	// ChamSys Ltd: allow us to verify correct config is loaded
+	// Checksum is register 0x80FF in GT928
+	dev_info(&ts->client->dev, "Config checksum %x\n", cfg->data[raw_cfg_len]);
+
 	return 0;
 }
 
@@ -506,9 +510,9 @@ static int goodix_int_sync(struct goodix_ts_data *ts)
 {
 	int error;
 
-	error = gpiod_direction_output(ts->gpiod_int, 0);
-	if (error)
-		return error;
+	//error = gpiod_direction_output(ts->gpiod_int, 0);
+	//if (error)
+	//	return error;
 
 	msleep(50);				/* T5: 50ms */
 
@@ -528,6 +532,13 @@ static int goodix_reset(struct goodix_ts_data *ts)
 {
 	int error;
 
+	// ChamSys Ltd: INT pin can only be input due to level shifter on
+	// MQ50HD/MQ70HD, set it to input here and comment out anywhere it
+	// is used as an output.
+	error = gpiod_direction_input(ts->gpiod_int);
+	if (error)
+		return error;
+
 	/* begin select I2C slave addr */
 	error = gpiod_direction_output(ts->gpiod_rst, 0);
 	if (error)
@@ -536,22 +547,24 @@ static int goodix_reset(struct goodix_ts_data *ts)
 	msleep(20);				/* T2: > 10ms */
 
 	/* HIGH: 0x28/0x29, LOW: 0xBA/0xBB */
-	error = gpiod_direction_output(ts->gpiod_int, ts->client->addr == 0x14);
-	if (error)
-		return error;
+	//error = gpiod_direction_output(ts->gpiod_int, ts->client->addr == 0x14);
+	//if (error)
+	//	return error;
 
-	usleep_range(100, 2000);		/* T3: > 100us */
+	//usleep_range(100, 2000);		/* T3: > 100us */
 
 	error = gpiod_direction_output(ts->gpiod_rst, 1);
 	if (error)
 		return error;
 
-	usleep_range(6000, 10000);		/* T4: > 5ms */
+	//usleep_range(6000, 10000);		/* T4: > 5ms */
 
 	/* end select I2C slave addr */
-	error = gpiod_direction_input(ts->gpiod_rst);
-	if (error)
-		return error;
+	// ChamSys Ltd: Reset pin is output only on MQ50HD/MQ70HD
+	// due to level shifter
+	//error = gpiod_direction_input(ts->gpiod_rst);
+	//if (error)
+	//	return error;
 
 	error = goodix_int_sync(ts);
 	if (error)
@@ -1025,7 +1038,9 @@ static int __maybe_unused goodix_resume(struct device *dev)
 	return 0;
 }
 
-static SIMPLE_DEV_PM_OPS(goodix_pm_ops, goodix_suspend, goodix_resume);
+// ChamSys Ltd: On MQ50HD/MQ70HD level shifter on INT pin prevents it being
+// used as output. We can't wake touch from suspend, so disable power management.
+//static SIMPLE_DEV_PM_OPS(goodix_pm_ops, goodix_suspend, goodix_resume);
 
 static const struct i2c_device_id goodix_ts_id[] = {
 	{ "GDIX1001:00", 0 },
@@ -1067,7 +1082,7 @@ static struct i2c_driver goodix_ts_driver = {
 		.name = "Goodix-TS",
 		.acpi_match_table = ACPI_PTR(goodix_acpi_match),
 		.of_match_table = of_match_ptr(goodix_of_match),
-		.pm = &goodix_pm_ops,
+		//.pm = &goodix_pm_ops, // ChamSys Ltd: PM disabled, see note above
 	},
 };
 module_i2c_driver(goodix_ts_driver);
