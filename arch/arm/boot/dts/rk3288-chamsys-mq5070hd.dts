@@ -75,6 +75,13 @@
 			};
 		};
 	};
+
+	sound {
+		status = "okay";
+		compatible = "rockchip,rk3288-chamsys-audio";
+		chamsys,audio-cpu = <&i2s>;
+		chamsys,audio-codec = <&codec>;
+	};
 };
 
 &hdmi {

@@ -79,3 +79,11 @@ config SND_SOC_RK3399_GRU_SOUND
 	help
 	  Say Y or M here if you want to add support multiple codecs for SoC
 	  audio on Rockchip RK3399 GRU boards.
+
+config SND_SOC_RK3288_CHAMSYS_AUDIO
+	tristate "Machine driver RK3288 <--> ES8328"
+	depends on SND_SOC_ROCKCHIP && I2C && GPIOLIB && CLKDEV_LOOKUP
+	select SND_SOC_ROCKCHIP_I2S
+	select SND_SOC_ES8328_I2C
+	help
+	  Analog audio support on RK3288 Firefly core with ES8328 codec.
