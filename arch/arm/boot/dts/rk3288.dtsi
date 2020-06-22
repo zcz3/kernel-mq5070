@@ -234,14 +234,6 @@
 		arm,no-tick-in-suspend;
 	};
 
-	timer: timer@ff810000 {
-		compatible = "rockchip,rk3288-timer";
-		reg = <0x0 0xff810000 0x0 0x20>;
-		interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
-		clocks = <&xin24m>, <&cru PCLK_TIMER>;
-		clock-names = "timer", "pclk";
-	};
-
 	display-subsystem {
 		compatible = "rockchip,display-subsystem";
 		ports = <&vopl_out>, <&vopb_out>;
@@ -598,10 +590,10 @@
 
 	usb_host0_ehci: usb@ff500000 {
 		compatible = "generic-ehci";
-		reg = <0x0 0xff500000 0x0 0x100>;
+		reg = <0x0 0xff500000 0x0 0x20000>;
 		interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
-		clocks = <&cru HCLK_USBHOST0>;
-		clock-names = "usbhost";
+		clocks = <&cru HCLK_USBHOST0>, <&usbphy1>;
+		clock-names = "usbhost", "utmi";
 		phys = <&usbphy1>;
 		phy-names = "usb";
 		status = "disabled";
@@ -632,8 +624,9 @@
 		clock-names = "otg";
 		dr_mode = "otg";
 		g-np-tx-fifo-size = <16>;
-		g-rx-fifo-size = <275>;
-		g-tx-fifo-size = <256 128 128 64 64 32>;
+		g-rx-fifo-size = <280>;
+		g-tx-fifo-size = <256 128 128 64 32 16>;
+		g-use-dma;
 		phys = <&usbphy0>;
 		phy-names = "usb2-phy";
 		status = "disabled";
@@ -689,7 +682,7 @@
 		compatible = "rockchip,rk3288-pwm";
 		reg = <0x0 0xff680010 0x0 0x10>;
 		#pwm-cells = <3>;
-		pinctrl-names = "default";
+		pinctrl-names = "active";
 		pinctrl-0 = <&pwm1_pin>;
 		clocks = <&cru PCLK_RKPWM>;
 		clock-names = "pwm";
@@ -716,6 +709,14 @@
 		clocks = <&cru PCLK_RKPWM>;
 		clock-names = "pwm";
 		status = "disabled";
+	};
+
+	timer: timer@ff6b0000 {
+		compatible = "rockchip,rk3288-timer";
+		reg = <0x0 0xff6b0000 0x0 0x20>;
+		interrupts = <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&xin24m>, <&cru PCLK_TIMER>;
+		clock-names = "timer", "pclk";
 	};
 
 	bus_intmem@ff700000 {
