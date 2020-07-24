@@ -198,15 +198,25 @@
 /* SD card */
 &sdmmc {
 	status = "ok";
+	// Increase clock to get full 100MB/s read speed
+	max-frequency = <200000000>;
 	bus-width = <4>;
-	cap-mmc-highspeed;
-	cap-sd-highspeed;
-	card-detect-delay = <200>;
+	// Only support UHS rate
+	// SD card is fitted in factory with a Samsung Pro Endurance 32GB
+	sd-uhs-sdr104;
 	disable-wp;
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc_clk>, <&sdmmc_cmd>, <&sdmmc_cd>, <&sdmmc_bus4>;
 	vmmc-supply = <&vcc_sd>;
-	vqmmc-supply = <&vccio_sd>;
+
+	// This prevents UHS rates from working
+	//vqmmc-supply = <&vccio_sd>;
+};
+
+/* eMMC flash storage on Firefly card */
+&emmc {
+	// Squeeze a bit more read performance
+	max-frequency = <200000000>;
 };
 
 /* REG7: Should be VCCA_33 (audio power). */
@@ -226,7 +236,10 @@
 };
 
 &vccio_sd {
+	// 1.8V for UHS rates
 	regulator-always-on;
+	regulator-min-microvolt = <1800000>;
+	regulator-max-microvolt = <3300000>;
 };
 
 &vccio_wl {
