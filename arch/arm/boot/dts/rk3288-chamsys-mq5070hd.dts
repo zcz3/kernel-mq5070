@@ -52,8 +52,9 @@
 		compatible = "pwm-backlight";
 		brightness-levels = <0 255>;
 		num-interpolated-steps = <255>;
-		default-brightness-level = <128>;
+		default-brightness-level = <170>;
 		pwms = <&pwm1 0 5000000 0>;
+		enable-gpios = <&gpio4 RK_PC5 GPIO_ACTIVE_HIGH>;
 		post-pwm-on-delay-ms = <10>;
 		pwm-off-delay-ms = <10>;
 		power-supply = <&vcc_sys>;
