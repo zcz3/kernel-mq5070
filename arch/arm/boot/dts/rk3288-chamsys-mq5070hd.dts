@@ -202,16 +202,14 @@
 	// Increase clock to get full 100MB/s read speed
 	max-frequency = <200000000>;
 	bus-width = <4>;
-	// Only support UHS rate
+	// Unable to support UHS-1 rates reliably
 	// SD card is fitted in factory with a Samsung Pro Endurance 32GB
-	sd-uhs-sdr104;
+	cap-sd-highspeed;
 	disable-wp;
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc_clk>, <&sdmmc_cmd>, <&sdmmc_cd>, <&sdmmc_bus4>;
 	vmmc-supply = <&vcc_sd>;
-
-	// This prevents UHS rates from working
-	//vqmmc-supply = <&vccio_sd>;
+	vqmmc-supply = <&vccio_sd>;
 };
 
 /* eMMC flash storage on Firefly card */
