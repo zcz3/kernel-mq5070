@@ -940,12 +940,14 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += \
 	rk3228-evb.dtb \
 	rk3229-evb.dtb \
 	rk3229-xms6.dtb \
+	rk3288-chamsys-mq5070hd.dtb \
+	rk3288-chamsys-mq5070hd-bestar1.dtb \
+	rk3288-chamsys-mq5070hd-panasonic1.dtb \
 	rk3288-evb-act8846.dtb \
 	rk3288-evb-rk808.dtb \
 	rk3288-firefly-beta.dtb \
 	rk3288-firefly.dtb \
 	rk3288-firefly-reload.dtb \
-	rk3288-chamsys-mq5070hd.dtb \
 	rk3288-miqi.dtb \
 	rk3288-phycore-rdk.dtb \
 	rk3288-popmetal.dtb \
