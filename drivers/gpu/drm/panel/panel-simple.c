@@ -3250,6 +3250,44 @@ static const struct panel_desc bestar_bsd101wum_n80 = {
         .connector_type = DRM_MODE_CONNECTOR_eDP,
 };
 
+// Panel BESTAR BSD101WUM-N80 with eDP to LVDS adaptor
+static const struct drm_display_mode bestar_bsd101wum_n80B_mode = {
+        .clock = 149000,
+
+        .hdisplay    = 1920,
+        .hsync_start = 1920 + 80,
+        .hsync_end   = 1920 + 80 + 40,
+        .htotal      = 1920 + 80 + 40 + 40,
+
+        .vdisplay    = 1200,
+        .vsync_start = 1200 + 20,
+        .vsync_end   = 1200 + 20 + 10,
+        .vtotal      = 1200 + 20 + 10 + 10,
+
+       	.vrefresh = 60, // Not actually needed but it apparently makes the debug messages easier to read.
+
+        .flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+};
+
+static const struct panel_desc bestar_bsd101wum_n80B = {
+	.modes = &bestar_bsd101wum_n80B_mode,
+	.num_modes = 1,
+	.size = {
+		.width = 220,
+	 	.height = 138,
+	},
+
+        // Blindly copied from the DTS
+        .delay = {
+          .prepare = 120,
+        },
+
+        // Not sure if any of the following is required
+        .bus_format = MEDIA_BUS_FMT_RGB666_1X18,
+        .bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
+        .connector_type = DRM_MODE_CONNECTOR_eDP,
+};
+
 static const struct of_device_id platform_of_match[] = {
 	{
 		.compatible = "ampire,am-480272h3tmqw-t01h",
@@ -3593,6 +3631,9 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "bestar,bsd101wum-n80",
 		.data = &bestar_bsd101wum_n80,
+	}, {
+		.compatible = "bestar,bsd101wum-n80B",
+		.data = &bestar_bsd101wum_n80B,
 	}, {
 		/* sentinel */
 	}

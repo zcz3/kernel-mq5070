@@ -8,11 +8,11 @@
 #include "rk3288-chamsys-mq5070hd.dtsi"
 
 / {
-	model = "ChamSys-RK3288-MQ5070HD-bestar1";
+	model = "ChamSys-RK3288-MQ5070HD-bestar2";
 };
 
 &panel {
-	compatible = "bestar,bsd101wum-n80";
+	compatible = "bestar,bsd101wum-n80B";
 };
 
 &panel_touch {
