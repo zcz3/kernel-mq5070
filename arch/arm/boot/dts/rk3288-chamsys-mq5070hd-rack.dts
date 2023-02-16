@@ -11,8 +11,9 @@
 	model = "ChamSys-RK3288-MQ5070HD-rack";
 };
 
-// No SD card
-&sdmmc { status = "disabled"; };
+// There's no SD card
+// We still need this node as code assumes internal flash is /dev/mmcblk1
+//&sdmmc { status = "disabled"; };
 
 // No internal touchscreen
 &backlight { status = "disabled"; };
