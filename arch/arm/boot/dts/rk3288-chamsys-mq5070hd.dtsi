@@ -180,8 +180,6 @@
 		interrupts = <RK_PB0 IRQ_TYPE_EDGE_FALLING>;
 		irq-gpios = <&gpio5 8 GPIO_ACTIVE_HIGH>;
 		reset-gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>;
-                touchscreen-inverted-x = <1>;
-                touchscreen-inverted-y = <1>;
 	};
 };
 
