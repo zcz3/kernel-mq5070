@@ -19,13 +19,15 @@ EXTRA_CFLAGS += -Wno-unused-label
 EXTRA_CFLAGS += -Wno-unused-parameter
 EXTRA_CFLAGS += -Wno-unused-function
 EXTRA_CFLAGS += -Wno-unused
-EXTRA_CFLAGS += -DCONFIG_CONCURRENT_MODE
+#EXTRA_CFLAGS += -DCONFIG_CONCURRENT_MODE
 
 ccflags-y += -D__CHECK_ENDIAN__
 
 #EXTRA_CFLAGS += -Wno-uninitialized
 
-EXTRA_CFLAGS += -g -I$(src)/include
+EXTRA_CFLAGS += -g -I$(srctree)/$(src)/include
+EXTRA_CFLAGS += -I$(srctree)/$(src)/hal/phydm
+EXTRA_CFLAGS += -I$(srctree)/$(src)/platform
 
 #EXTRA_LDFLAGS += --strip-debug
 
@@ -258,12 +260,12 @@ ifeq ($(CONFIG_PLATFORM_I386_PC), y)
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211
 EXTRA_CFLAGS += -DRTW_USE_CFG80211_STA_EVENT # only enable when kernel >= 3.2
 EXTRA_CFLAGS += -DCONFIG_P2P_IPS
-SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ | sed -e s/ppc/powerpc/ | sed -e s/armv.l/arm/)
-ARCH ?= $(SUBARCH)
-CROSS_COMPILE ?=
-KVER  := $(shell uname -r)
-KSRC := /lib/modules/$(KVER)/build
-INSTALL_PREFIX :=
+#SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ | sed -e s/ppc/powerpc/ | sed -e s/armv.l/arm/)
+#ARCH ?= $(SUBARCH)
+#CROSS_COMPILE ?=
+#KVER  := $(shell uname -r)
+#KSRC := /lib/modules/$(KVER)/build
+#INSTALL_PREFIX :=
 endif
 
 ifeq ($(CONFIG_PLATFORM_FS_MX61), y)
@@ -322,7 +324,7 @@ $(MODULE_NAME)-y += $(_HAL_INTFS_FILES)
 $(MODULE_NAME)-y += $(_OUTSRC_FILES)
 $(MODULE_NAME)-y += $(_PLATFORM_FILES)
 
-obj-m := $(MODULE_NAME).o
+obj-$(CONFIG_RTL8723BU) := $(MODULE_NAME).o
 
 else
 
