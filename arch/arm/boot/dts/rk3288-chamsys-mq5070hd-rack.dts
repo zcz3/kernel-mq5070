@@ -49,3 +49,10 @@
 
 // UART4 is MIDI
 &uart4 { status = "okay"; };
+
+&act8846 {
+	// Add back in
+	// Needed in rack but not consoles
+	// to ensure power button works after shutdown
+	system-power-controller;
+};
