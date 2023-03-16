@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
- * Device tree file for ChamSys Ltd MQ50HD and MQ70HD.
+ * Base device tree file for ChamSys Ltd consoles
+ * based on the RK3288 + MQ50/70 baseboard.
  */
 
 /dts-v1/;
 #include "rk3288-firefly-reload-core.dtsi"
 
 / {
-	model = "ChamSys-RK3288-MQ5070HD";
 	compatible = "firefly,firefly-rk3288-reload", "rockchip,rk3288";
 
 	vcc_5v: vcc_sys: vsys-regulator {
@@ -170,7 +170,7 @@
 	status = "okay";
 
 	/* Internal touchscreen */
-	gt928@5d {
+	panel_touch: gt928@5d {
 		status = "okay";
 		compatible = "goodix,gt928";
 		reg = <0x5d>;

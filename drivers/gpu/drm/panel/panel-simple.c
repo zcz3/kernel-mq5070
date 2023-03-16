@@ -3188,6 +3188,7 @@ static const struct panel_desc arm_rtsm = {
 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 };
 
+// This seems to work for the first 2 displays used in the MQ5070
 static const struct drm_display_mode panasonic_vvx10t025_mode = {
 	.clock = 286272,
 	.hdisplay = 2560,
@@ -3209,6 +3210,82 @@ static const struct panel_desc panasonic_vvx10t025 = {
 		.width = 129,
 		.height = 171,
 	},
+};
+
+// Panel BESTAR BSD101WUM-N80 with eDP to LVDS adaptor
+static const struct drm_display_mode bestar_bsd101wum_n80_mode = {
+        .clock = 155120,                     // 77.56 x 2 x 1000
+        
+        .hdisplay    = 1920,                 // 960 x 2
+        .hsync_start = 1920 + 128,           // front porch = 64 x 2
+        .hsync_end   = 1920 + 128 + 20,      // sync = 10 x 2
+        .htotal      = 1920 + 128 + 20 + 12, // back porch = 6 x 2
+
+        .vdisplay    = 1200,
+        .vsync_start = 1200 + 19,
+        .vsync_end   = 1200 + 19 + 4,
+        .vtotal      = 1200 + 19 + 4 + 20,
+
+       	.vrefresh = 60, // Not actually needed but it apparently makes the debug messages easier to read.
+
+        .flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+};
+
+static const struct panel_desc bestar_bsd101wum_n80 = {
+	.modes = &bestar_bsd101wum_n80_mode,
+	.num_modes = 1,
+	.size = {
+		.width = 220,
+	 	.height = 138,
+	},
+
+        // Blindly copied from the DTS
+        .delay = {
+          .prepare = 120,
+        },
+
+        // Not sure if any of the following is required
+        .bus_format = MEDIA_BUS_FMT_RGB666_1X18,
+        .bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
+        .connector_type = DRM_MODE_CONNECTOR_eDP,
+};
+
+// Panel BESTAR BSD101WUM-N80 with eDP to LVDS adaptor
+static const struct drm_display_mode bestar_bsd101wum_n80B_mode = {
+        .clock = 149000,
+
+        .hdisplay    = 1920,
+        .hsync_start = 1920 + 80,
+        .hsync_end   = 1920 + 80 + 40,
+        .htotal      = 1920 + 80 + 40 + 40,
+
+        .vdisplay    = 1200,
+        .vsync_start = 1200 + 20,
+        .vsync_end   = 1200 + 20 + 10,
+        .vtotal      = 1200 + 20 + 10 + 10,
+
+       	.vrefresh = 60, // Not actually needed but it apparently makes the debug messages easier to read.
+
+        .flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+};
+
+static const struct panel_desc bestar_bsd101wum_n80B = {
+	.modes = &bestar_bsd101wum_n80B_mode,
+	.num_modes = 1,
+	.size = {
+		.width = 220,
+	 	.height = 138,
+	},
+
+        // Blindly copied from the DTS
+        .delay = {
+          .prepare = 120,
+        },
+
+        // Not sure if any of the following is required
+        .bus_format = MEDIA_BUS_FMT_RGB666_1X18,
+        .bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
+        .connector_type = DRM_MODE_CONNECTOR_eDP,
 };
 
 static const struct of_device_id platform_of_match[] = {
@@ -3551,6 +3628,12 @@ static const struct of_device_id platform_of_match[] = {
 	}, {
 		.compatible = "panasonic,vvx10t025",
 		.data = &panasonic_vvx10t025,
+	}, {
+		.compatible = "bestar,bsd101wum-n80",
+		.data = &bestar_bsd101wum_n80,
+	}, {
+		.compatible = "bestar,bsd101wum-n80B",
+		.data = &bestar_bsd101wum_n80B,
 	}, {
 		/* sentinel */
 	}
